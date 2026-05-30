@@ -2,17 +2,11 @@
  * Integration tests for verify() operation
  * Tests blockchain verification and proof validation
  */
-import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest'
-import { setupServer } from 'msw/node'
+import { describe, it, expect } from 'vitest'
 import { http, HttpResponse } from 'msw'
 import { OpenTimestampsClient } from '../../src/client.js'
-import { handlers, FAKE_COMPLETE_OTS, FAKE_INCOMPLETE_OTS } from '../mocks/handlers.js'
-
-const server = setupServer(...handlers)
-
-beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+import { FAKE_COMPLETE_OTS, FAKE_INCOMPLETE_OTS } from '../mocks/handlers.js'
+import { server } from '../mocks/server.js'
 
 describe('verify() - Integration Tests', () => {
   it('should verify a complete proof successfully', async () => {

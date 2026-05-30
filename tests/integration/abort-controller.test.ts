@@ -1,15 +1,12 @@
 /**
  * Integration tests for AbortController and cancellation support
  */
-import { describe, it, expect, beforeAll, afterEach, afterAll } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { OpenTimestampsClient } from '../../src/client.js'
 import { server } from '../mocks/server.js'
 import { http, HttpResponse, delay } from 'msw'
 
 describe('AbortController Integration', () => {
-  beforeAll(() => server.listen())
-  afterEach(() => server.resetHandlers())
-  afterAll(() => server.close())
 
   describe('stamp() cancellation', () => {
     it('should abort stamp operation when signal is aborted', async () => {
