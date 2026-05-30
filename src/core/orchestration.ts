@@ -13,7 +13,7 @@ import {
   bytesToHex,
 } from '@alexalves87/opentimestamps'
 import { ResilientNetworkLayer } from '../network/resilience.js'
-import { ValidationError, StampError, UpgradeError, NetworkError } from '../errors.js'
+import { ValidationError, StampError, UpgradeError } from '../errors.js'
 import { Logger, VerificationResult } from '../types.js'
 
 /**
@@ -244,7 +244,7 @@ export async function orchestrateVerify(
   let otsProof
   try {
     otsProof = deserializeOTS(new Uint8Array(proof))
-  } catch (error) {
+  } catch {
     return {
       valid: false,
       error: 'Invalid .ots proof format',

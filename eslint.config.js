@@ -17,6 +17,6 @@ export default [
     },
   },
   {
-    ignores: ['dist/', 'node_modules/', 'coverage/', '*.js', '*.cjs'],
+    ignores: ['dist/', 'node_modules/', 'coverage/', '*.js', '*.cjs', 'tests/fixtures/'],
   },
 ]

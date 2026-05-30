@@ -3,7 +3,7 @@
  * Covers edge cases, concurrent requests, and complex state transitions
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { CircuitBreaker } from '../../src/network/circuit-breaker.js'
 import { CircuitBreakerError } from '../../src/errors.js'
 
@@ -88,14 +88,14 @@ describe('CircuitBreaker - Advanced Scenarios', () => {
     })
 
     it('should handle concurrent failures correctly', async () => {
-      let failCount = 0
+      let _failCount = 0
       const promises = Array.from({ length: 10 }, () =>
         breaker
           .execute('fail-key', async () => {
             throw new Error('concurrent fail')
           })
           .catch(() => {
-            failCount++
+            _failCount++
           })
       )
 
