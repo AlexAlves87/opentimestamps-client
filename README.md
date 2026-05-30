@@ -79,21 +79,26 @@ const client = new OpenTimestampsClient({
 
 ## Architecture
 
-```
-Public API (stamp / upgrade / verify)
-           |
-Orchestration Layer (validation, coordination)
-           |
-Resilient Network Layer (timeout, retry, circuit breaker)
-           |
-Fetch Adapter (multi-runtime: Node.js, browser, edge)
-```
+
 
 Key design decisions:
 - Per-calendar circuit breakers: one failing calendar does not affect others
 - Threshold-based submissions: stamp() requires N/M calendars to succeed (default 2/4)
 - Sequential upgrade queries: stops at first confirmed calendar
 - 4xx = fail fast, 5xx = retry
+
+## Error Handling
+
+```typescript
+try {
+  await client.stamp(hash)
+} catch (error) {
+  if (error instanceof StampError) {
+    console.log(error.successfulSubmissions.length, 'calendars succeeded')
+    console.log(error.failedSubmissions.length, 'calendars failed')
+  }
+}
+```
 
 ## Testing
 
@@ -108,6 +113,7 @@ npm run build
 
 - [OpenTimestamps Protocol](https://opentimestamps.org)
 - [npm Package](https://www.npmjs.com/package/@alexalves87/opentimestamps-client)
+- [Issue Tracker](https://github.com/AlexAlves87/opentimestamps-client/issues)
 
 ## License
 
