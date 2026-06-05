@@ -1,120 +1,26 @@
-# OpenTimestamps Client SDK
+<div align="center">
 
-> Official TypeScript/JavaScript client for OpenTimestamps with enterprise-grade resilience patterns
+# 📦 This package has moved
 
-[![npm version](https://img.shields.io/npm/v/@alexalves87/opentimestamps-client.svg)](https://www.npmjs.com/package/@alexalves87/opentimestamps-client)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+[![Deprecated](https://img.shields.io/badge/status-deprecated-red?style=for-the-badge)](https://github.com/OTSkit)
+[![Moved to OTSkit](https://img.shields.io/badge/moved%20to-OTSkit-orange?style=for-the-badge)](https://github.com/OTSkit)
 
-## Features
+`opentimestamps-client` has been superseded by **OTSkit** —
+a full TypeScript rewrite with zero dependencies, enterprise resilience,
+and native AI agent support via MCP.
 
-**Complete OpenTimestamps Operations**
-- `stamp()` - Create timestamp proofs by submitting to calendar servers
-- `upgrade()` - Query calendars for Bitcoin confirmations
-- `verify()` - Verify proofs against the Bitcoin blockchain
+---
 
-**Enterprise-Grade Resilience**
-- **Circuit Breaker** - Isolate failures per calendar (prevents cascading failures)
-- **Exponential Backoff** - Configurable retry strategies with jitter
-- **Timeout Management** - Per-attempt and total operation timeouts
-- **Threshold-based Submissions** - Require minimum successful submissions (default: 2/4 calendars)
+## New packages
 
-**Developer Experience**
-- **TypeScript First** - Full type safety with strict mode enabled
-- **Multi-Runtime** - Works in Node.js 18+, browsers, and edge runtimes
-- **Tree-Shakeable** - Dual ESM/CJS build with zero dependencies
-- **Abort Support** - Native AbortController integration for all operations
-- **Observable** - Optional logger interface for monitoring and debugging
+| Package | Description | Install |
+|---|---|---|
+| [`@otskit/core`](https://github.com/OTSkit/OTSkit-core) | Protocol engine — zero deps, fail-closed | `npm i @otskit/core` |
+| [`@otskit/client`](https://github.com/OTSkit/OTSkit-client) | High-level SDK — stamp, upgrade, verify | `npm i @otskit/client` |
+| [`@otskit/mcp`](https://github.com/OTSkit/OTSkit-MCP) | MCP server for AI agents (Claude, Codex) | `npm i -g @otskit/mcp` |
 
-## Installation
+[![core](https://img.shields.io/npm/v/@otskit/core?label=%40otskit%2Fcore&color=blue)](https://www.npmjs.com/package/@otskit/core)
+[![client](https://img.shields.io/npm/v/@otskit/client?label=%40otskit%2Fclient&color=blue)](https://www.npmjs.com/package/@otskit/client)
+[![mcp](https://img.shields.io/npm/v/@otskit/mcp?label=%40otskit%2Fmcp&color=blue)](https://www.npmjs.com/package/@otskit/mcp)
 
-```bash
-npm install @alexalves87/opentimestamps-client
-```
-
-## Quick Start
-
-```typescript
-import { OpenTimestampsClient } from '@alexalves87/opentimestamps-client'
-import { createHash } from 'crypto'
-import { readFileSync, writeFileSync } from 'fs'
-
-const client = new OpenTimestampsClient()
-
-const fileContent = readFileSync('document.pdf')
-const hash = createHash('sha256').update(fileContent).digest()
-
-// Create timestamp
-const otsProof = await client.stamp(hash)
-writeFileSync('document.pdf.ots', otsProof)
-
-// Upgrade to Bitcoin confirmation
-const upgradedProof = await client.upgrade(otsProof)
-
-// Verify
-const result = await client.verify(upgradedProof, hash)
-console.log('Verified in block', result.blockHeight)
-```
-
-## Resilience Configuration
-
-```typescript
-const client = new OpenTimestampsClient({
-  resilience: {
-    timeout: { totalMs: 30000, perAttemptMs: 5000 },
-    retries: {
-      enabled: true,
-      maxAttempts: 3,
-      backoff: { strategy: 'exponential', initialDelayMs: 1000, jitter: 'full' },
-    },
-    circuitBreaker: {
-      enabled: true,
-      failureThreshold: 5,
-      recoveryTimeoutMs: 15000,
-    },
-  },
-})
-```
-
-## Architecture
-
-
-
-Key design decisions:
-- Per-calendar circuit breakers: one failing calendar does not affect others
-- Threshold-based submissions: stamp() requires N/M calendars to succeed (default 2/4)
-- Sequential upgrade queries: stops at first confirmed calendar
-- 4xx = fail fast, 5xx = retry
-
-## Error Handling
-
-```typescript
-try {
-  await client.stamp(hash)
-} catch (error) {
-  if (error instanceof StampError) {
-    console.log(error.successfulSubmissions.length, 'calendars succeeded')
-    console.log(error.failedSubmissions.length, 'calendars failed')
-  }
-}
-```
-
-## Testing
-
-83+ tests (unit + integration), MSW-based mocks, property-based testing with fast-check.
-
-```bash
-npm test
-npm run build
-```
-
-## Links
-
-- [OpenTimestamps Protocol](https://opentimestamps.org)
-- [npm Package](https://www.npmjs.com/package/@alexalves87/opentimestamps-client)
-- [Issue Tracker](https://github.com/AlexAlves87/opentimestamps-client/issues)
-
-## License
-
-MIT - alexalves87
+</div>
